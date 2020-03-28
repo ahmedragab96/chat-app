@@ -41,6 +41,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/api/users', require('./routes/users'));
+app.use('/api/chats', require('./routes/chat'));
+
 
 io.on("connection", socket => {
   socket.on("Input Chat Message", msg => {
@@ -48,7 +50,7 @@ io.on("connection", socket => {
       try{
         let chat = new Chat({
           message: msg.chatMessage,
-          sender: msg.userID,
+          sender: msg.userId,
           type: msg.type,
         });
 
