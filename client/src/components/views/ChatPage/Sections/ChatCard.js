@@ -2,6 +2,33 @@ import React from "react";
 import moment from 'moment';
 import { Comment, Tooltip, Avatar } from 'antd';
 
+const renderContent = (message, type) => {
+    if (type === 'Video') {
+        return (
+            <video
+                style={{ maxWidth: '200px' }}
+                src={message}
+                alt="video"
+                type="video/mp4" controls
+            />
+        )
+    } else if (type === 'Image') {
+        return (
+            <img
+                style={{ maxWidth: '200px' }}
+                src={message}
+                alt="img"
+            />
+        );
+    } else if (type === 'Text') {
+        return (
+            <p>
+                {message}
+            </p>
+        );
+    }
+}
+
 function ChatCard(props) {
     return (
         <div style={{ width: '100%' }}>
@@ -13,25 +40,7 @@ function ChatCard(props) {
                     />
                 }
                 content={
-                    props.message.substring(0, 8) === "uploads/" ?
-                        // this will be either video or image 
-
-                        props.message.substring(props.message.length - 3, props.message.length) === 'mp4' ?
-                            <video
-                                style={{ maxWidth: '200px' }}
-                                src={`http://localhost:5000/${props.message}`} alt="video"
-                                type="video/mp4" controls
-                            />
-                            :
-                            <img
-                                style={{ maxWidth: '200px' }}
-                                src={`http://localhost:5000/${props.message}`}
-                                alt="img"
-                            />
-                        :
-                        <p>
-                            {props.message}
-                        </p>
+                    renderContent(props.message, props.type)  
                 }
                 datetime={
                     <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
