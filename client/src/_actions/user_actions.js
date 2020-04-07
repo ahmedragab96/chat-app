@@ -8,7 +8,7 @@ import {
 import { USER_SERVER } from '../components/Config.js';
 
 export function registerUser(dataToSubmit){
-    const request = axios.post(`${USER_SERVER}/register`,dataToSubmit)
+    const request = axios.post(`https://ec2-3-86-87-136.compute-1.amazonaws.com:5000${USER_SERVER}/register`,dataToSubmit)
         .then(response => response.data);
     
     return {
@@ -18,7 +18,7 @@ export function registerUser(dataToSubmit){
 }
 
 export function loginUser(dataToSubmit){
-    const request = axios.post(`${USER_SERVER}/login`,dataToSubmit)
+    const request = axios.post(`https://ec2-3-86-87-136.compute-1.amazonaws.com:5000${USER_SERVER}/login`,dataToSubmit)
                 .then(response => response.data);
 
     return {
@@ -28,7 +28,7 @@ export function loginUser(dataToSubmit){
 }
 
 export function auth(){
-    const request = axios.get(`${USER_SERVER}/auth`)
+    const request = axios.get(`https://ec2-3-86-87-136.compute-1.amazonaws.com:5000${USER_SERVER}/auth`)
     .then(response => response.data);
 
     return {

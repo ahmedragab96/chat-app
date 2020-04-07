@@ -6,7 +6,6 @@ import moment from "moment";
 import { getChats, afterPostMessage } from "../../../_actions/chat_actions"
 import ChatCard from "./Sections/ChatCard"
 import Dropzone from 'react-dropzone';
-import Axios from 'axios';
 import {
   uploadImage,
 } from '../../../helperFunctions/uploadFile';
@@ -17,7 +16,7 @@ export class ChatPage extends Component {
     }
 
     componentDidMount() {
-        let server = "http://localhost:5000";
+        let server = "https://ec2-3-86-87-136.compute-1.amazonaws.com:5000";
 
         this.props.dispatch(getChats());
 
@@ -56,25 +55,23 @@ export class ChatPage extends Component {
         formData.append("file", files[0])
 
         const fileData = await uploadImage(files[0], files[0].name.split('.')[0]);
-        console.log(process.env.REACT_APP_S3_URL, fileData.key);
-        console.log(files[0].type.indexOf('video'));
-                if (fileData.key) {
-                    let chatMessage = `${process.env.REACT_APP_S3_URL}${fileData.key}`;
-                    let userId = this.props.user.userData._id
-                    let userName = this.props.user.userData.name;
-                    let userImage = this.props.user.userData.image;
-                    let nowTime = moment();
-                    let type = files[0].type.indexOf('video') >= 0 ? "Video" : "Image";
+        if (fileData.key) {
+            let chatMessage = `${process.env.REACT_APP_S3_URL}${fileData.key}`;
+            let userId = this.props.user.userData._id
+            let userName = this.props.user.userData.name;
+            let userImage = this.props.user.userData.image;
+            let nowTime = moment();
+            let type = files[0].type.indexOf('video') >= 0 ? "Video" : "Image";
 
-                    this.socket.emit("Input Chat Message", {
-                        chatMessage,
-                        userId,
-                        userName,
-                        userImage,
-                        nowTime,
-                        type
-                    });
-                }
+            this.socket.emit("Input Chat Message", {
+                chatMessage,
+                userId,
+                userName,
+                userImage,
+                nowTime,
+                type
+            });
+        }
     }
 
 

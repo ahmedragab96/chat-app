@@ -12,11 +12,9 @@ const ReactS3Client = new S3(config);
 /*  Notice that if you don't provide a dirName, the file will be automatically uploaded to the root of your bucket */
  
 export const uploadImage = async (file, fileName) => {
-  console.log(process.env.REACT_APP_S3_URL, process.env.REACT_APP_S3_BUCKET_NAME);
   try {
     const data = await ReactS3Client.uploadFile(file, fileName);
 
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

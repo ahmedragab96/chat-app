@@ -6,7 +6,7 @@ import {
 import { CHAT_SERVER } from '../components/Config.js';
 
 export function getChats(){
-    const request = axios.get(`${CHAT_SERVER}/getChats`)
+    const request = axios.get(`https://ec2-3-86-87-136.compute-1.amazonaws.com:5000${CHAT_SERVER}/getChats`)
         .then(response => response.data);
 
     return {
