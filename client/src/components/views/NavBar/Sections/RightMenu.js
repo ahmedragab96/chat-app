@@ -10,7 +10,7 @@ function RightMenu(props) {
   const user = useSelector(state => state.user)
 
   const logoutHandler = () => {
-    axios.get(`https://ec2-3-86-87-136.compute-1.amazonaws.com:5000${USER_SERVER}/logout`).then(response => {
+    axios.get(`https://ichattingeasy.herokuapp.com${USER_SERVER}/logout`).then(response => {
       if (response.status === 200) {
         props.history.push("/login");
       } else {

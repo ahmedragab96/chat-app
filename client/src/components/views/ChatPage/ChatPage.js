@@ -16,7 +16,7 @@ export class ChatPage extends Component {
     }
 
     componentDidMount() {
-        let server = "https://ec2-3-86-87-136.compute-1.amazonaws.com:5000";
+        let server = "https://ichattingeasy.herokuapp.com";
 
         this.props.dispatch(getChats());
 
