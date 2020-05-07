@@ -6,7 +6,12 @@ import {
 import { CHAT_SERVER } from '../components/Config.js';
 
 export function getChats(){
-    const request = axios.get(`https://ichattingeasy.herokuapp.com${CHAT_SERVER}/getChats`)
+    const token = window.localStorage.getItem('token');
+    const request = axios.get(`${process.env.REACT_APP_SERVER_URL}${CHAT_SERVER}/getChats`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
         .then(response => response.data);
 
     return {

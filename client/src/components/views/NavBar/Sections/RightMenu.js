@@ -10,16 +10,18 @@ function RightMenu(props) {
   const user = useSelector(state => state.user)
 
   const logoutHandler = () => {
-    axios.get(`https://ichattingeasy.herokuapp.com${USER_SERVER}/logout`).then(response => {
-      if (response.status === 200) {
-        props.history.push("/login");
-      } else {
-        alert('Log Out Failed')
-      }
-    });
+    window.localStorage.removeItem('token');
+    // axios.get(`${process.env.REACT_APP_SERVER_URL}${USER_SERVER}/logout`).then(response => {
+    //   if (response.status === 200) {
+    //     props.history.push("/login");
+    //   } else {
+    //     alert('Log Out Failed')
+    //   }
+    // });
+    window.location.reload();
   };
 
-  if (user.userData && !user.userData.isAuth) {
+  if (!window.localStorage.getItem('token')) {
     return (
       <Menu mode={props.mode}>
         <Menu.Item key="mail">

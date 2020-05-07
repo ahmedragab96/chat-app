@@ -8,7 +8,7 @@ import {
 import { USER_SERVER } from '../components/Config.js';
 
 export function registerUser(dataToSubmit){
-    const request = axios.post(`https://ichattingeasy.herokuapp.com${USER_SERVER}/register`,dataToSubmit)
+    const request = axios.post(`${process.env.REACT_APP_SERVER_URL}${USER_SERVER}/register`,dataToSubmit)
         .then(response => response.data);
     
     return {
@@ -18,8 +18,10 @@ export function registerUser(dataToSubmit){
 }
 
 export function loginUser(dataToSubmit){
-    const request = axios.post(`https://ichattingeasy.herokuapp.com${USER_SERVER}/login`,dataToSubmit)
+    const request = axios.post(`${process.env.REACT_APP_SERVER_URL}${USER_SERVER}/login`,dataToSubmit)
                 .then(response => response.data);
+
+    console.log('login  ==>',request);
 
     return {
         type: LOGIN_USER,
@@ -28,7 +30,12 @@ export function loginUser(dataToSubmit){
 }
 
 export function auth(){
-    const request = axios.get(`https://ichattingeasy.herokuapp.com${USER_SERVER}/auth`)
+    const token = window.localStorage.getItem('token');
+    const request = axios.get(`${process.env.REACT_APP_SERVER_URL}${USER_SERVER}/auth` , {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
     .then(response => response.data);
 
     return {

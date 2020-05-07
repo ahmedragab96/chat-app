@@ -1,4 +1,5 @@
-const dotenv     = require('dotenv').config();
+const dotenv     = require('dotenv');
+dotenv.config();
 
 module.exports = {
   mongoURI : `mongodb+srv://${process.env.MONGO_USER}:${

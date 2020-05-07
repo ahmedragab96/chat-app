@@ -3,69 +3,108 @@ const router = express.Router();
 const { User } = require("../models/User");
 
 const { auth } = require("../middleware/auth");
-
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 //=================================
 //             User
 //=================================
 
-router.get("/auth", auth, (req, res) => {
+router.get("/auth", async (req, res) => {
+    const {
+        id,
+      } = req.body;
+    const user = User.findOne({
+        id,
+     });
     res.status(200).json({
-        _id: req.user._id,
-        isAdmin: req.user.role === 0 ? false : true,
+        _id: user._id,
+        isAdmin: user.role === 0 ? false : true,
         isAuth: true,
-        email: req.user.email,
-        name: req.user.name,
-        lastname: req.user.lastname,
-        role: req.user.role,
-        image: req.user.image,
+        email: user.email,
+        name: user.name,
+        lastname: user.lastname,
+        role: user.role,
+        image: user.image,
     });
 });
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res, next) => {
 
-    const user = new User(req.body);
-
-    user.save((err, doc) => {
-        if (err) return res.json({ success: false, err });
-        return res.status(200).json({
-            success: true
+    try {
+        const {
+          email,
+          password,
+          name,
+          lastname,
+          image,
+        } = req.body;
+        // check for user exists
+        const existedUser = await User.findOne({
+          email,
         });
-    });
+    
+        if (existedUser) {
+          throw new Error('User already exists');
+        }
+  
+        const hashedPassword = await bcrypt.hash(password, 12);
+  
+        const user = new User({
+          email,
+          password: hashedPassword,
+          name,
+          lastname,
+          image,
+        });
+  
+        // save user in database
+        const result = await user.save();
+        res.status(200).json({
+            success: true,
+            data: result._doc,
+        });
+      } catch (error) {
+        throw error;
+      }
 });
 
-router.post("/login", (req, res) => {
-    User.findOne({ email: req.body.email }, (err, user) => {
-        if (!user)
-            return res.json({
+router.post("/login", async (req, res) => {
+    try {
+        const {
+          email,
+          password,
+        } = req.body;
+        console.log(email, password);
+    
+        const user = await User.findOne({email});
+        if (!user) {
+          throw new Error('user doesn\'t exist');
+        }
+    
+        console.log(user.password);
+        const isEqual = bcrypt.compare(password, user.password);
+        if (!isEqual) {
+            res.status(200).json({
+                message: 'Wrong Password',
                 loginSuccess: false,
-                message: "Auth failed, email not found"
             });
-
-        user.comparePassword(req.body.password, (err, isMatch) => {
-            if (!isMatch)
-                return res.json({ loginSuccess: false, message: "Wrong password" });
-
-            user.generateToken((err, user) => {
-                if (err) return res.status(400).send(err);
-                res.cookie("w_authExp", user.tokenExp);
-                res
-                    .cookie("w_auth", user.token)
-                    .status(200)
-                    .json({
-                        loginSuccess: true, userId: user._id
-                    });
-            });
+        }
+        const token = jwt.sign({
+          userId: user.id,
+          email: user.email
+        },
+        process.env.JWTSECRETKEY,{
+          expiresIn: '1h'
         });
-    });
-});
-
-router.get("/logout", auth, (req, res) => {
-    User.findOneAndUpdate({ _id: req.user._id }, { token: "", tokenExp: "" }, (err, doc) => {
-        if (err) return res.json({ success: false, err });
-        return res.status(200).send({
-            success: true
+    
+        res.status(200).json({
+            userId: user.id,
+            token,
+            loginSuccess: true,
         });
-    });
+      } catch (error) {
+        throw error;
+      }
 });
 
 module.exports = router;

@@ -22,6 +22,8 @@ export class ChatPage extends Component {
 
         this.socket = io(server);
 
+        console.log('hereeee', this.props.user);
+
         this.socket.on("Output Chat Message", messageFromBackEnd => {
             console.log(messageFromBackEnd)
             this.props.dispatch(afterPostMessage(messageFromBackEnd));

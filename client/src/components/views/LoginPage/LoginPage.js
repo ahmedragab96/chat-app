@@ -46,12 +46,13 @@ function LoginPage(props) {
             .then(response => {
               if (response.payload.loginSuccess) {
                 window.localStorage.setItem('userId', response.payload.userId);
+                window.localStorage.setItem('token', response.payload.token);
                 if (rememberMe === true) {
                   window.localStorage.setItem('rememberMe', values.id);
                 } else {
                   localStorage.removeItem('rememberMe');
                 }
-                props.history.push("/");
+                props.history.push("/chat");
               } else {
                 setFormErrorMessage('Check out your Account or Password again')
               }
