@@ -1,15 +1,15 @@
 import React from 'react'
-import { FaCode } from "react-icons/fa";
+import { FaRocketchat } from "react-icons/fa";
 
 function LandingPage(props) {
     console.log('in landing page', props ? props.user : 'nothing');
     return (
         <>
         <div className="app">
-            <FaCode style={{ fontSize: '4rem' }} /><br />
-            <span style={{ fontSize: '2rem' }}>Let's Start Coding!</span>
+            <FaRocketchat style={{ fontSize: '4rem' }} /><br />
+            <span style={{ fontSize: '2rem' }}>Let's Start Chatting!</span>
         </div>
-        <div style={{ float:'right' }}>Thanks For Using This Boiler Plate by John Ahn</div>
+        <div style={{ float:'right' }}>Thanks For Using This Website</div>
         </>
     )
 }
