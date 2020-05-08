@@ -12,22 +12,9 @@ export default function (ComposedClass, reload, adminRoute = null) {
 
         useEffect(() => {
 
-            // dispatch(auth()).then(response => {
-            //     if (!response.payload.isAuth) {
-            //         if (reload) {
-            //             props.history.push('/login')
-            //         }
-            //     } else {
-            //         if (adminRoute && !response.payload.isAdmin) {
-            //             props.history.push('/')
-            //         }
-            //         else {
-            //             if (reload === false) {
-            //                 props.history.push('/')
-            //             }
-            //         }
-            //     }
-            // })
+            dispatch(auth()).then(response => {
+                console.log(response);
+            })
             console.log('in auth', user);
             console.log('local token', localToken);
             if (!localToken) {

@@ -29,7 +29,7 @@ export function loginUser(dataToSubmit){
     }
 }
 
-export function auth(){
+export function auth() {
     const token = window.localStorage.getItem('token');
     const request = axios.get(`${process.env.REACT_APP_SERVER_URL}${USER_SERVER}/auth` , {
         headers: {

@@ -12,7 +12,7 @@ export default function(state={},action){
             return {...state, register: action.payload }
         case LOGIN_USER:
             console.log(action.payload);
-            return { ...state, loginSucces: action.payload.loginSucces, userData: action.payload.userId, token: action.payload.token }
+            return { ...state, loginSucces: action.payload.loginSucces, userId: action.payload.userId, token: action.payload.token, userData: action.payload.userData }
         case AUTH_USER:
             return {...state, userData: action.payload }
         case LOGOUT_USER:

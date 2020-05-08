@@ -42,9 +42,10 @@ export class ChatPage extends Component {
 
     renderCards = () =>
         this.props.chats.chats
-        && this.props.chats.chats.map((chat) => (
-            <ChatCard key={chat._id}  {...chat} />
-        ));
+        && this.props.chats.chats.map((chat) => {
+            console.log(chat)
+            return <ChatCard key={chat._id}  {...chat} />
+        });
 
     onDrop = async (files) => {
         console.log(files)
@@ -76,8 +77,8 @@ export class ChatPage extends Component {
         }
     }
 
-
     submitChatMessage = (e) => {
+        console.log('before chat', this.props.user);
         e.preventDefault();
 
         let chatMessage = this.state.chatMessage
